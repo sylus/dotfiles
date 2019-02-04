@@ -83,7 +83,7 @@
 	# Treat spaces before tabs and all kinds of trailing whitespace as an error
 	# [default] trailing-space: looks for spaces at the end of a line
 	# [default] space-before-tab: looks for spaces before tabs at the beginning of a line
-	whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+	whitespace = cr-at-eol
 
 	# Make `git rebase` safer on OS X
 	# More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
@@ -157,3 +157,22 @@
 [url "git://gist.github.com/"]
 
 	insteadOf = "gist:"
+
+[user]
+
+	name = William Hearn
+	email = sylus1984@gmail.com
+
+[filter "lfs"]
+
+	required = true
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+
+[credential]
+
+	helper = osxkeychain
+
+[status]
+
+	submoduleSummary = true

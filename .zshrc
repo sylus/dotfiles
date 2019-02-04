@@ -1,4 +1,4 @@
-# Path to your oh-my-zsh installation.
+# Path to your oh-my-zsh installation
 export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load.
@@ -45,8 +45,7 @@ ZSH_THEME="flazz"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(brew docker git wd)
-
+plugins=(brew docker docker-compose wd hub git golang zplug completion)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -79,12 +78,61 @@ export LANG=en_US.UTF-8
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-export GOPATH=$HOME/GitHub/go
+# go
+export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
-export PATH="/Users/sylus/.chefdk/gem/ruby/2.1.0/bin:$PATH"
+
+# Ruby
 export PATH="$HOME/.rbenv/bin:$PATH"
-export DOCKER_HOST=tcp://localhost:2375
 eval "$(rbenv init -)"
 
-# added by travis gem
-[ -f /Users/sylus/.travis/travis.sh ] && source /Users/sylus/.travis/travis.sh
+# Docker
+export DOCKER_HOST=tcp://localhost:2375
+
+# PHP
+alias composer="php /usr/local/bin/composer.phar"
+alias drush="php /usr/local/bin/drush.phar"
+
+# Composer
+export PATH=~/.composer/vendor/bin:$PATH
+
+# ZPLUG
+export ZPLUG_HOME=/usr/local/opt/zplug
+source $ZPLUG_HOME/init.zsh
+
+# Pure
+fpath+=("/usr/local/share/zsh/site-functions")
+autoload -U promptinit; promptinit
+prompt pure
+
+# Aure CLI
+export PATH=$PATH:/Users/sylus/bin
+autoload bashcompinit && bashcompinit
+source '/Users/sylus/lib/azure-cli/az.completion'
+
+# kubectl
+autoload -U colors; colors
+source /usr/local/etc/zsh-kubectl-prompt/kubectl.zsh
+RPROMPT='%{$fg[blue]%}($ZSH_KUBECTL_PROMPT)%{$reset_color%}'
+if [ $commands[kubectl] ]; then
+  source <(kubectl completion zsh)
+fi
+
+# kubectl aliases
+alias k='kubectl'
+alias kg='kubectl get'
+alias kgpo='kubectl get pods'
+alias kgpoojson='kubectl get pods -o=json'
+alias kgpon='kubectl get pods --namespace'
+alias ksysgpooyamll='kubectl --namespace=kube-system get pods -o=yaml -l'
+alias krm='kubectl delete'
+alias krmf='kubectl delete -f'
+alias krming='kubectl delete ingress'
+alias krmingl='kubectl delete ingress -l'
+alias krmingall='kubectl delete ingress --all-namespaces'
+alias ka='kubectl apply -f'
+alias klo='kubectl logs -f'
+alias kex='kubectl exec -i -t'
+
+# JIRA
+eval "$(jira --completion-script-zsh)"

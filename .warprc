@@ -1,2 +1,6 @@
-normandy:/Users/sylus/GitHub/sylus/vagrant/vagrant-normandy
-github:/Users/sylus/GitHub
+github:~/GitHub
+devops:~/GitHub/devops
+charts:~/GitHub/devops/kubernetes/charts
+aks:~/GitHub/devops/kubernetes/aks-engine
+k8s:~/GitHub/devops/kubernetes
+docker:~/GitHub/devops/docker

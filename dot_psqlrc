@@ -1,0 +1,21 @@
+-- Reference: http://www.postgresql.org/docs/9.3/static/app-psql.html
+
+-- Disable startup message
+\set QUIET 1
+\pset null '[NULL]'
+
+-- Set Prompt
+\set PROMPT1 '%[%033[1m%]%M %n@%/%R%[%033[0m%]%# '
+\set PROMPT2 '[more] %R > '
+
+-- How long each query takes
+\timing on
+
+-- Custom output format
+\x auto
+\set VERBOSITY verbose
+\set HISTSIZE 65536
+\set HISTFILE ~/.psql_history- :DBNAME
+\set HISTCONTROL ignoredups
+\set COMP_KEYWORD_CASE upper
+\unset QUIET

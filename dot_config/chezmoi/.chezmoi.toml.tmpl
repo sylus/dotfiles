@@ -1,0 +1,62 @@
+# -*-mode:conf-toml-*- vim:ft=toml
+
+# Copyright (c) 2021, Tom Payne (https://github.com/twpayne/dotfiles)
+#
+# ~/.local/share/chezmoi/.chezmoi.toml.tmpl
+# =============================================================================
+# Used to customize configuration when doing a `chezmoi init`.
+#
+# This template file will trigger prompts to fill-in machine-specific
+# templateable values. The resulting file is then created at
+# `~/.config/chezmoi/chezmoi.toml`
+# See https://www.chezmoi.io/docs/how-to/
+#
+# {{- /* This file supports Go's text/template language. */}}
+
+{{/* boolean feature tags */}}
+{{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
+{{- $transient := false -}}{{/* true if this machine is temporary, e.g. a cloud or VM instance */}}
+{{- $kubernetes := false -}}{{/* true if this machine is used for Kubernetes work */}}
+{{- $personal := false -}}{{/* true if this machine should have personal secrets from Vault */}}
+{{- "" -}}
+
+{{/* detect GitHub codespaces and VSCode remote containers */}}
+{{- if or (env "CODESPACES") (env "REMOTE_CONTAINERS_IPC") -}}
+{{-   $headless = true -}}
+{{-   $transient = true -}}
+{{- end -}}
+
+{{- $hostname := .chezmoi.hostname -}}
+
+{{- if eq .chezmoi.os "windows" -}}
+{{-   $transient = true -}}
+{{- end -}}
+
+{{- if not $transient -}}
+{{-   if eq $hostname "raspberrypi" -}}
+{{-     $headless = true -}}
+{{-     $personal = true -}}
+{{-   else -}}
+{{-     $headless = true -}}
+{{-     $transient = true -}}
+{{-     $kubernetes = true -}}
+{{-   end -}}
+{{- end -}}
+
+{{- if eq .chezmoi.os "windows" -}}
+[cd]
+  command = "powershell"
+  args = ["-nologo"]
+{{ end -}}
+
+{{- $email := promptString "Git email address for the author/committer" }}
+{{- $name := promptString "Git username for the author/committer" }}
+
+[data]
+  email = {{ $email | quote }}
+  name = {{ $name | quote }}
+  headless = {{ $headless }}
+  hostname = {{ $hostname | quote }}
+  transient = {{ $transient }}
+  kubernetes = {{ $kubernetes }}
+  personal = {{ $personal }}

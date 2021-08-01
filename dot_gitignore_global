@@ -1,0 +1,27 @@
+# -*-mode:gitignore-*- vim:ft=gitignore
+
+# ~/.gitignore_global
+# =============================================================================
+# Used by Git to determine the files and directories to globally ignore.
+#
+# Reference: https://git-scm.com/docs/gitignore
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Compiled Python files
+*.pyc
+
+# OSX
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnail cache files
+._*
+Thumbs.db
+
+# Files that might appear on external disks
+.Spotlight-V100
+.Trashes

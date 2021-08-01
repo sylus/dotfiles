@@ -1,0 +1,12 @@
+{{- if (eq .chezmoi.os "darwin") -}}
+#!/bin/bash
+
+set -eufo pipefail
+
+brew bundle --global
+
+{{- if .kubernetes }}
+kubectl krew install < Krewfile
+{{- end }}
+
+{{ end -}}

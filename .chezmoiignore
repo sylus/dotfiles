@@ -1,0 +1,26 @@
+# -*-mode:gitignore-*- vim:ft=gitignore
+
+# ~/.local/share/chezmoi/.chezmoiignore
+# =============================================================================
+# If a file called .chezmoiignore exists in the source state then it is
+# interpreted as a set of patterns to ignore. Patterns are matched using
+# doublestar.Match and match against the target path, not the source path.
+#
+# Reference: https://www.chezmoi.io/docs/reference/#chezmoiignore
+
+*.tar.gz
+LICENSE.md
+README.md
+Makefile
+*.deb
+*.tar.gz
+
+# Ignore non-macOS files.
+{{ if ne .chezmoi.os "darwin" -}}
+dot_Brewfile.tmpl
+{{- end }}
+
+# Ignore non-Windows files.
+{{ if ne .chezmoi.os "windows" }}
+dot_config/windows_terminal
+{{ end }}

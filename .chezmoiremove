@@ -1,0 +1,12 @@
+# -*-mode:bash-*- vim:ft=chezmoiremove
+
+# ~/.local/share/chezmoi/.chezmoiremove
+# =============================================================================
+# If a file called .chezmoiremove exists in the source state then it is
+# interpreted as a list of targets to remove. .chezmoiremove is interpreted
+# as a template.
+#
+# Reference: https://www.chezmoi.io/docs/reference/#chezmoiremove
+
+.gitcookies
+.gitignore

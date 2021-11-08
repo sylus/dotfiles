@@ -15,12 +15,7 @@ Makefile
 *.deb
 *.tar.gz
 
-# Ignore non-macOS files.
-{{ if ne .chezmoi.os "darwin" -}}
-dot_Brewfile.tmpl
-{{- end }}
-
 # Ignore non-Windows files.
-{{ if ne .chezmoi.os "windows" }}
-dot_config/windows_terminal
+{{- if ne .chezmoi.os "windows" }}
+.config/windows_terminal
 {{ end }}

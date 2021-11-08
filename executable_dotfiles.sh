@@ -43,7 +43,7 @@ import_repo() {
     else
         uuid=$(uuidgen)
     fi
-    TMPFILE=$(mktemp /tmp/dotfiles."${uuid}".tar.gz) || exit 1
+    TMPFILE=$(mktemp /tmp/dotfiles."${uuid}".XXXXX --suffix=.tar.gz) || exit 1
     curl -s -L -o "$TMPFILE" "$repo" || exit 1
     chezmoi import --strip-components 1 --destination "$destination" "$TMPFILE" || exit 1
     rm -f "$TMPFILE"

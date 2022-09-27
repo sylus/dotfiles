@@ -2,11 +2,9 @@ access-matrix
 cert-manager
 cost
 ctx
+deprecations
 neat
 node-shell
 ns
-popeye
 sniff
-tail
-trace
 tree

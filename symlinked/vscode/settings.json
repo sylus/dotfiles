@@ -12,8 +12,7 @@
       "suppressGitVersionWarning": false,
       "suppressLineUncommittedWarning": false,
       "suppressNoRepositoryWarning": false
-  },
-  "editor.fontFamily": "'Fira Code'",
+},
   "editor.fontLigatures": true,
   "editor.suggestSelection": "first",
   "editor.minimap.enabled": true,
@@ -30,7 +29,7 @@
   },
   "python.linting.flake8Enabled": true,
   "python.testing.cwd": "",
-  "python.languageServer": "Microsoft",
+  "python.languageServer": "Default",
   "python.defaultInterpreterPath": "/usr/local/bin/python3",
   "terraform.languageServer": {
       "external": true,
@@ -43,8 +42,7 @@
       "trace.server": "off"
   },
   "jupyter.allowUnauthorizedRemoteConnection": true,
-  "jupyter.variableQueries": [],
-  "window.zoomLevel": -1,
+"jupyter.variableQueries": [],
 "security.workspace.trust.untrustedFiles": "open",
 "workbench.commandPalette.history": 75,
 "files.trimTrailingWhitespace": true,
@@ -52,5 +50,6 @@
 "powershell.codeFormatting.trimWhitespaceAroundPipe": true,
 "redhat.telemetry.enabled": false,
 "telemetry.enableCrashReporter": false,
-"telemetry.enableTelemetry": false
+"telemetry.enableTelemetry": false,
+"editor.fontFamily": "'Fira Code'"
 }

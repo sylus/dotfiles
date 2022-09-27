@@ -7,7 +7,6 @@ Install them with:
 ```sh
 chezmoi init sylus
 chezmoi apply
-./dotfiles.sh
 ```
 
 ## Acknowledgements

@@ -98,7 +98,6 @@ plugins=(
   git
   gpg-agent
   history
-  per-directory-history
   kubectl
   terraform
   vault
@@ -106,16 +105,9 @@ plugins=(
   vscode
 )
 
-if [[ "$OSTYPE" =~ ^darwin ]]; then
-    plugins+=(
-        osx
-    )
-fi
-
 zstyle :omz:plugins:ssh-agent agent-forwarding on
 
 source $ZSH/oh-my-zsh.sh
-
 
 # Hyper Configuration
 # -----------------------------------------------------------------------------
@@ -126,37 +118,6 @@ unset zle_bracketed_paste to
 unsetopt PROMPT_SP
 setopt histignorespace
 setopt rm_star_silent
-
-
-# Syntax Highlighting
-# -----------------------------------------------------------------------------
-
-# Add zsh-syntax-highlighting.zsh
-[[ ! -f $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] \
-    || source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-
-# Command-line shell completions
-# -----------------------------------------------------------------------------
-
-# Provide Homebrew completions (if installed).
-# See https://docs.brew.sh/Shell-Completion
-if type brew &> /dev/null; then
-    FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-fi
-
-# Provide Chezmoi completions (if installed).
-# See https://github.com/twpayne/chezmoi/blob/master/docs/REFERENCE.md
-if command -v chezmoi > /dev/null; then
-    eval "$(chezmoi completion zsh)"
-fi
-
-# Add zsh-autosuggestions.zsh
-if [[ -f $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]]
-then
-    source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-    ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-fi
 
 
 # Includes

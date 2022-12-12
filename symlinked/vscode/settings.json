@@ -6,50 +6,42 @@
   "gitlens.keymap": "chorded",
   "git.autofetch": true,
   "gitlens.advanced.messages": {
-      "suppressCommitHasNoPreviousCommitWarning": false,
-      "suppressCommitNotFoundWarning": false,
-      "suppressFileNotUnderSourceControlWarning": false,
-      "suppressGitVersionWarning": false,
-      "suppressLineUncommittedWarning": false,
-      "suppressNoRepositoryWarning": false
-},
+    "suppressCommitHasNoPreviousCommitWarning": false,
+    "suppressCommitNotFoundWarning": false,
+    "suppressFileNotUnderSourceControlWarning": false,
+    "suppressGitVersionWarning": false,
+    "suppressLineUncommittedWarning": false,
+    "suppressNoRepositoryWarning": false
+  },
   "editor.fontLigatures": true,
   "editor.suggestSelection": "first",
   "editor.minimap.enabled": true,
   "editor.renderControlCharacters": false,
   "[json]": {
-      "editor.defaultFormatter": "HookyQR.beautify"
+    "editor.defaultFormatter": "HookyQR.beautify"
   },
   "go.formatTool": "goimports",
   "go.useLanguageServer": true,
   "vsicons.dontShowNewVersionMessage": true,
   "editor.multiCursorModifier": "ctrlCmd",
   "[python]": {
-      "editor.defaultFormatter": "ms-python.python"
+    "editor.defaultFormatter": "ms-python.python"
   },
   "python.linting.flake8Enabled": true,
   "python.testing.cwd": "",
   "python.languageServer": "Default",
   "python.defaultInterpreterPath": "/usr/local/bin/python3",
-  "terraform.languageServer": {
-      "external": true,
-      "pathToBinary": "",
-      "args": [
-          "serve",
-          "-tf-exec=/Users/sylus/terraformls"
-      ],
-      "maxNumberOfProblems": 100,
-      "trace.server": "off"
-  },
   "jupyter.allowUnauthorizedRemoteConnection": true,
-"jupyter.variableQueries": [],
-"security.workspace.trust.untrustedFiles": "open",
-"workbench.commandPalette.history": 75,
-"files.trimTrailingWhitespace": true,
-"gitlens.blame.ignoreWhitespace": true,
-"powershell.codeFormatting.trimWhitespaceAroundPipe": true,
-"redhat.telemetry.enabled": false,
-"telemetry.enableCrashReporter": false,
-"telemetry.enableTelemetry": false,
-"editor.fontFamily": "'Fira Code'"
+  "jupyter.variableQueries": [],
+  "security.workspace.trust.untrustedFiles": "open",
+  "workbench.commandPalette.history": 75,
+  "files.trimTrailingWhitespace": true,
+  "gitlens.blame.ignoreWhitespace": true,
+  "powershell.codeFormatting.trimWhitespaceAroundPipe": true,
+  "redhat.telemetry.enabled": false,
+  "telemetry.enableCrashReporter": false,
+  "telemetry.enableTelemetry": false,
+  "editor.fontFamily": "'Fira Code'",
+  "terraform.languageServer.enable": true,
+  "terraform.languageServer.path": ""
 }

@@ -1,0 +1,43 @@
+formatter: markdown
+header-from: main.tf
+sort:
+  enabled: true
+  by: required
+output:
+  file: README.md
+  mode: inject
+  template: |-
+    <!-- BEGIN_TF_DOCS -->
+    {{ .Content }}
+    <!-- END_TF_DOCS -->
+
+content: |-
+    {{ .Requirements }}
+
+    {{ .Providers }}
+
+    {{ .Modules }}
+
+    {{ .Inputs }}
+
+    {{ .Outputs }}
+
+sections:
+  show:
+    - requirements
+    - providers
+    - modules
+    - inputs
+    - outputs
+
+settings:
+  anchor: true
+  color: true
+  default: true
+  type: true
+  indent: 2
+  read-comments: true
+  required: true
+  description: false
+  escape: true
+  hide-empty: true

@@ -49,14 +49,43 @@
   args = ["-nologo"]
 {{ end -}}
 
-{{- $email := promptString "Git email address for the author/committer" }}
-{{- $name := promptString "Git username for the author/committer" }}
+{{- $email := get . "email" -}}
+{{- if not $email -}}
+{{-   $email = promptString "Git email address for the author/committer" -}}
+{{- end -}}
+
+{{- $git_user := get . "git_user" -}}
+{{- if not $git_user -}}
+{{-   $git_user = promptString "Git username for the author/committer" -}}
+{{- end -}}
+
+{{- $work := get . "work" -}}
+{{- if not $work -}}
+{{-   $work = promptBool "Is this a work computer" -}}
+{{- end -}}
 
 [data]
   email = {{ $email | quote }}
-  name = {{ $name | quote }}
+  git_user = {{ $git_user | quote }}
+  work = {{ $work }}
+
   headless = {{ $headless }}
   hostname = {{ $hostname | quote }}
   transient = {{ $transient }}
   kubernetes = {{ $kubernetes }}
   personal = {{ $personal }}
+
+{{- if .work }}
+{{- $jira_url := get . "jira_url" -}}
+{{- if not $jira_url -}}
+{{-     $jira_url = promptString "What is the Jira url" }}
+{{- end }}
+
+{{- $jira_user := get . "jira_user" -}}
+{{- if not $jira_user -}}
+{{-     $jira_user = promptString "What is the Jira username" }}
+{{- end }}
+
+  jira_url = {{ $jira_url | quote }}
+  jira_user = {{ $jira_user | quote }}
+{{- end }}

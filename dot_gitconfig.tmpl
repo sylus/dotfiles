@@ -24,7 +24,7 @@
 
 [commit]
     # Specify template file for new commit messages.
-    template = ~/.gitmessage.txt
+    template = ~/.gitmessage
 
 [core]
     # Disable line endings output conversion.
@@ -112,7 +112,7 @@
     email = "{{ .email }}"
 
     # Specify the username of the author/committer.
-    name = "{{ .name }}"
+    name = "{{ .git_user }}"
 
 [include]
     # Include aliases.

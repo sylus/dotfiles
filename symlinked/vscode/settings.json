@@ -1,5 +1,4 @@
 {
-  "workbench.colorTheme": "Monokai",
   "git.confirmSync": false,
   "editor.renderWhitespace": "all",
   "explorer.confirmDragAndDrop": false,
@@ -43,5 +42,9 @@
   "telemetry.enableTelemetry": false,
   "editor.fontFamily": "'Fira Code'",
   "terraform.languageServer.enable": true,
-  "terraform.languageServer.path": ""
+  "terraform.languageServer.path": "",
+  "gitlens.views.commitDetails.files.layout": "tree",
+  "workbench.colorTheme": "Monokai Pro",
+  "workbench.iconTheme": "Monokai Pro Icons",
+  "npm.enableRunFromFolder": true
 }

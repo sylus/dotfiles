@@ -3,12 +3,12 @@
 set -eufo pipefail
 
 chsh -s /usr/bin/zsh
-{{ end -}}
 
-{{ if (eq .chezmoi.os "linux") -}}
 {{   if (contains "microsoft" .chezmoi.kernel.osrelease) -}}
 if [ ! -L /usr/local/bin/xdg-open ]; then
   sudo ln -s $(which wslview) /usr/local/bin/xdg-open
 fi
 {{   end -}}
+
 {{ end -}}
+

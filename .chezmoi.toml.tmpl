@@ -18,6 +18,7 @@
 {{- $transient := false -}}{{/* true if this machine is temporary, e.g. a cloud or VM instance */}}
 {{- $kubernetes := false -}}{{/* true if this machine is used for Kubernetes work */}}
 {{- $personal := false -}}{{/* true if this machine should have personal secrets from Vault */}}
+{{- $wsl := false -}}{{/* true if this is WSL2 */}}
 {{- "" -}}
 
 {{/* detect GitHub codespaces and VSCode remote containers */}}
@@ -64,6 +65,12 @@
 {{-   $work = promptBool "Is this a work computer" -}}
 {{- end -}}
 
+{{- if (eq .chezmoi.os "linux") -}}
+{{-   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+{{-     $wsl = true -}}
+{{-   end }}
+{{- end -}}
+
 [data]
   email = {{ $email | quote }}
   git_user = {{ $git_user | quote }}
@@ -74,6 +81,7 @@
   transient = {{ $transient }}
   kubernetes = {{ $kubernetes }}
   personal = {{ $personal }}
+  wsl = {{ $wsl }}
 
 {{- if .work }}
 {{- $jira_url := get . "jira_url" -}}

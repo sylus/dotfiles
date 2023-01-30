@@ -46,5 +46,6 @@
   "gitlens.views.commitDetails.files.layout": "tree",
   "workbench.colorTheme": "Monokai Pro",
   "workbench.iconTheme": "Monokai Pro Icons",
-  "npm.enableRunFromFolder": true
+  "npm.enableRunFromFolder": true,
+  "gitlens.views.repositories.includeWorkingTree": true
 }

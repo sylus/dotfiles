@@ -83,7 +83,8 @@
   personal = {{ $personal }}
   wsl = {{ $wsl }}
 
-{{- if .work }}
+{{- $work = get . "work" -}}
+{{- if $work }}
 {{- $jira_url := get . "jira_url" -}}
 {{- if not $jira_url -}}
 {{-     $jira_url = promptString "What is the Jira url" }}

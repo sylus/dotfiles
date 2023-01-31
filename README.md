@@ -2,11 +2,19 @@
 
 My personal dotfiles, managed with [`chezmoi`](https://github.com/twpayne/chezmoi).
 
-Install them with:
+## Installation
+
+### Ubuntu / WSL
 
 ```sh
-chezmoi init sylus
-chezmoi apply
+curl -sfL https://git.io/chezmoi | sh
+chezmoi init --apply --verbose sylus
+```
+
+## Install location
+
+```sh
+~/.local/share/chezmoi
 ```
 
 ## Acknowledgements

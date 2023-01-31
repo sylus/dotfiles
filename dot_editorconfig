@@ -36,7 +36,7 @@ tab_width = 2
 continuation_indent_size = 2
 charset = utf-8
 
-[*.{js,ts}]
+[*.{js,jsx,json,jsonc,ts,tsx}]
 indent_size = 2
 tab_width = 2
 continuation_indent_size = 2
@@ -74,3 +74,5 @@ trim_trailing_whitespace = false
 
 [*.{ps1,psd1,psm1,ps1xml}]
 end_of_line = crlf
+indent_style = space
+indent_size = 2

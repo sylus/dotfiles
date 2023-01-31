@@ -64,6 +64,15 @@
 {{- if not $work -}}
 {{-   $work = promptBool "Is this a work computer" -}}
 {{- end -}}
+{{- if $work }}
+{{- $jira_url := get . "jira_url" -}}
+{{- if not $jira_url -}}
+{{-     $jira_url = promptString "What is the Jira url" }}
+{{- end }}
+{{- $jira_user := get . "jira_user" -}}
+{{- if not $jira_user -}}
+{{-     $jira_user = promptString "What is the Jira username" }}
+{{- end }}
 
 {{- if (eq .chezmoi.os "linux") -}}
 {{-   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
@@ -72,29 +81,15 @@
 {{- end -}}
 
 [data]
-  email = {{ $email | quote }}
-  git_user = {{ $git_user | quote }}
-  work = {{ $work }}
-
-  headless = {{ $headless }}
-  hostname = {{ $hostname | quote }}
-  transient = {{ $transient }}
+  email      = {{ $email | quote }}
+  git_user   = {{ $git_user | quote }}
+  work       = {{ $work }}
+  headless   = {{ $headless }}
+  hostname   = {{ $hostname | quote }}
+  transient  = {{ $transient }}
   kubernetes = {{ $kubernetes }}
-  personal = {{ $personal }}
-  wsl = {{ $wsl }}
-
-{{- $work = get . "work" -}}
-{{- if $work }}
-{{- $jira_url := get . "jira_url" -}}
-{{- if not $jira_url -}}
-{{-     $jira_url = promptString "What is the Jira url" }}
-{{- end }}
-
-{{- $jira_user := get . "jira_user" -}}
-{{- if not $jira_user -}}
-{{-     $jira_user = promptString "What is the Jira username" }}
-{{- end }}
-
-  jira_url = {{ $jira_url | quote }}
-  jira_user = {{ $jira_user | quote }}
+  personal   = {{ $personal }}
+  wsl        = {{ $wsl }}
+  jira_url   = {{ $jira_url | quote }}
+  jira_user  = {{ $jira_user | quote }}
 {{- end }}

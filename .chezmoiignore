@@ -14,6 +14,7 @@ README.md
 Makefile
 *.deb
 *.tar.gz
+install.sh
 
 # Ignore non-Windows files.
 {{- if ne .chezmoi.os "windows" }}

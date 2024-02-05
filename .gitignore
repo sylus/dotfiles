@@ -11,3 +11,4 @@
 *.tar.gz
 .envrc
 /tests/bats*
+bin/

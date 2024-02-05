@@ -1,1 +1,7 @@
+# ~/.local/share/chezmoi/.gitattributes
+# =============================================================================
+# A gitattributes file is a simple text file that gives attributes to pathnames.
+#
+# Reference: https://git-scm.com/docs/gitattributes
+
 * text=auto eol=lf

@@ -1,7 +1,0 @@
-{
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "require": {
-      "grasmash/yaml-cli": "^3.1"
-  }
-}

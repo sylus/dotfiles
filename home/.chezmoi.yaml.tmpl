@@ -1,0 +1,128 @@
+{{- $username := "sylus" -}}
+{{- $name := "" -}}
+{{- $email := "" -}}
+{{- $restricted := false -}}
+{{- $work := false -}}
+{{- $gpg := dict "sign" "" "encrypt" "" -}}
+{{- $secrets := dict "age" false -}}
+{{- $toolchains := list "cloud" "docker" "golang" "iac" "kubernetes" "node" "php" "python" }}
+
+{{- $data := . }}
+{{- $_ := set $data "git" (default (dict) (get $data "git")) -}}
+{{- $_ := set $data "gpg" (default (dict) (get $data "gpg")) -}}
+{{- $_ := set $data "host" (default (dict) (get $data "host")) -}}
+{{- $_ := set $data "toolchains" (default (dict) (get $data "toolchains")) -}}
+
+{{- $headless := false -}}
+{{- $ephemeral := false -}}
+{{/* detect GitHub codespaces, VSCode remote containers, Docker containers, Multipass VMs, and Vagrant boxes */}}
+{{- $ephemeralEnvOrUsername := or (env "CODESPACES") (env "REMOTE_CONTAINERS_IPC") (eq .chezmoi.username "root" "debian" "vagrant" "vscode" "devcontainer") -}}
+{{- $ephemeralCgroup := and (stat "/proc/1/cgroup") (output "cat" "/proc/1/cgroup" | regexMatch "(docker|lxc)") -}}
+{{- if or $ephemeralEnvOrUsername $ephemeralCgroup -}}
+{{-   $headless = true -}}
+{{-   $ephemeral = true -}}
+{{-   writeToStdout "Chezmoi is running in a container.\n" -}}
+{{- end -}}
+
+{{- $distro := dict "family" .chezmoi.os "id" (get .chezmoi.osRelease "id" | default .chezmoi.os) -}}
+{{- if or (eq $distro.id "arch") (eq $distro.id "archarm") -}}
+{{- $_ := set $distro "id" "archlinux" -}}
+{{- end -}}
+
+{{- $chassisType := "desktop" }}
+{{- if $ephemeral -}}
+{{-   $chassisType = "ephemeral" }}
+{{- else if eq .chezmoi.os "linux" }}
+{{-   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+{{-     $chassisType = "wsl" }}
+{{-   else -}}
+{{-     $chassisType = (output "hostnamectl" "--json=short" | mustFromJson).Chassis }}
+{{-   end -}}
+{{- else if eq .chezmoi.os "darwin" }}
+{{-   if contains "MacBook" (output "sysctl" "-n" "hw.model") }}
+{{-     $chassisType = "laptop" }}
+{{-   else }}
+{{-     $chassisType = "desktop" }}
+{{-   end }}
+{{- else if eq .chezmoi.os "windows" }}
+{{-   $chassisType = (output "powershell.exe" "-noprofile" "-command" "if (Get-WmiObject -Class win32_battery -ComputerName localhost) { echo laptop } else { echo desktop }") }}
+{{- end }}
+
+{{- $toolchainsEnabled := dict }}
+{{- range $toolchain := $toolchains }}
+    {{- $withoutToolchains := env "WITHOUT_TOOLCHAINS" -}}
+    {{- $withoutToolchain := env (list "WITHOUT" (upper $toolchain) | join "_") -}}
+    {{- $withToolchain := env (list "WITH" (upper $toolchain) | join "_") -}}
+    {{- if and (or $withoutToolchains $withoutToolchain) (not $withToolchain) -}}
+      {{- writeToStdout (list "Disabled" $toolchain "toolchain.\n" | join " ")  -}}
+      {{- $_ := set $toolchainsEnabled $toolchain false }}
+    {{- else }}
+      {{- $_ := set $toolchainsEnabled $toolchain true }}
+    {{- end}}
+{{- end }}
+
+{{- if stdinIsATTY -}}
+
+{{- $work = promptBoolOnce $data.host "work" "Work Environment" $work -}}
+{{- $restricted = promptBoolOnce $data.host "restricted" "Restricted Environment (no sudo access)" $restricted -}}
+{{- $username = promptStringOnce $data.git "username" "Your Git Username" $username -}}
+{{- if eq $username "sylus" -}}
+  {{- $name = "William Hearn" -}}
+  {{- $email = "sylus1984@gmail.com" -}}
+  {{- $_ := set $secrets "age" true -}}
+{{- end -}}
+{{- $name = promptStringOnce $data.git "name" "Your Git Name" $name -}}
+{{- $email = promptStringOnce $data.git "email" "Your Git Email" $email -}}
+
+{{- range $toolchain := $toolchains }}
+    {{- $enabled := promptBoolOnce $data.toolchains $toolchain (list "Enable" $toolchain "toolchain" | join " ") (get $toolchainsEnabled $toolchain) -}}
+    {{- if and (eq $toolchain "kubernetes") $enabled (not $toolchainsEnabled.docker)  -}}
+    {{- $_ := set $toolchainsEnabled "docker" $enabled }}
+    {{-   writeToStdout "Enabled Docker toolchain to support Kubernetes.\n" -}}
+    {{- end -}}
+    {{- $_ := set $toolchainsEnabled $toolchain $enabled }}
+{{- end }}
+
+{{- writeToStdout "💡 Tip: you can re-enter your name and email with `chezmoi init --data=false`.\n" -}}
+
+{{- else -}}
+{{-   $headless = true -}}
+{{-   writeToStdout "Chezmoi is running in headless environment.\n" -}}
+{{- end -}}
+
+{{ if $secrets.age -}}
+encryption: age
+age:
+  identity: "{{ $.chezmoi.homeDir }}/.config/age/key.txt"
+  recipient: "age12tge68l99jjaf0ezhds54j00chg0t603pd97wqmlx5j9yu7fv3fqchmdy9" # pragma: allowlist secret
+{{- end }}
+diff:
+  pager: "delta"
+status:
+  exclude: ["always"]
+data:
+    cache:
+      secrets:
+        dir: "{{ joinPath .chezmoi.cacheDir "user" .chezmoi.username "secrets" }}"
+    git:
+      email: "{{ $email }}"
+      name: "{{ $name }}"
+      username: {{ $username }}
+    host:
+      arch: "{{ .chezmoi.arch }}"
+      distro:
+        family: "{{ $distro.family }}"
+        id: "{{ $distro.id }}"
+      home: "{{ .chezmoi.homeDir }}"
+      source: "{{ .chezmoi.sourceDir }}"
+      type: "{{ $chassisType }}"
+      work: {{ $work }}
+      interactive: {{ stdinIsATTY }}
+      restricted: {{ $restricted }}
+      headless: {{ $headless }}
+    secrets:
+      age: {{ $secrets.age }}
+    toolchains:
+    {{- range $toolchain, $enabled := $toolchainsEnabled }}
+      {{ $toolchain}}: {{ $enabled }}
+    {{- end }}

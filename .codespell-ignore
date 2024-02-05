@@ -1,0 +1,7 @@
+# ~/.local/share/chezmoi/.codespell-ignore
+# =============================================================================
+# List of certain words to ignore.
+#
+# Reference: https://github.com/codespell-project/codespell
+
+iterm

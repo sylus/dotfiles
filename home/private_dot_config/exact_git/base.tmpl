@@ -1,0 +1,38 @@
+[apply]
+    # Detect whitespace errors when applying a patch.
+    whitespace = fix
+
+[commit]
+    # Specify template file for new commit messages.
+    template = ~/.config/git/message
+
+[core]
+    # Disable line endings output conversion.
+    autocrlf = input
+
+    # Set comment character to something that allows mentioning issue numbers.
+    commentChar = ";"
+
+    # Store global exclusions into a custom file.
+    excludesfile = ~/.gitignore_global
+
+    # Make `git rebase` safer on macOS.
+    # See http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/
+    trustctime = false
+
+    # Speed up commands involving untracked files such as `git status`.
+    # See https://git-scm.com/docs/git-update-index#_untracked_cache
+    untrackedCache = true
+
+[filter "lfs"]
+    # Specify the command to convert a worktree file's content to a blob upon checkin.
+    clean = git-lfs clean -- %f
+
+    # Convert between Large File Storage pointer and actual content.
+    process = git-lfs filter-process
+
+    # Specify the command to convert a blob object's content to a worktree file upon checkout.
+    smudge = git-lfs smudge -- %f
+
+    # Turn a content that by itself is unusable into a usable content.
+    required = true

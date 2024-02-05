@@ -1,32 +1,40 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
-// https://github.com/microsoft/vscode-dev-containers/tree/v0.231.0/containers/ubuntu
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
 {
   "name": "Ubuntu",
   "build": {
     "dockerfile": "Dockerfile",
-    // Update 'VARIANT' to pick an Ubuntu version: hirsute, focal, bionic
-    // Use hirsute or bionic on local arm64/Apple Silicon.
     "args": { "VARIANT": "jammy" }
   },
 
-  // Set *default* container specific settings.json values on container create.
-  "settings": {},
-
-  // Add the IDs of extensions you want installed when the container is created.
-  "extensions": [],
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  "features": {
+    // Install common utilities
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": "true",
+      "configureZshAsDefaultShell": "true",
+      "installOhMyZsh": true,
+      "upgradePackages": "true"
+    }
+  },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
 
-  // Use 'postCreateCommand' to run commands after the container is created.
-  // "postCreateCommand": "uname -a",
+  // Uncomment the next line to run commands after the container is created.
+  // "postCreateCommand": "cat /etc/os-release",
 
-  // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-  "remoteUser": "vscode",
+  // Configure tool-specific properties.
+  "customizations": {
+    // Configure properties specific to VS Code.
+    "vscode": {
+        "settings": {},
+        "extensions": [
+            "eamodio.gitlens"
+        ]
+    }
+  },
 
-  "features": {
-    "git": "os-provided",
-    "github-cli": "latest",
-    "sshd": "latest"
-  }
+  // Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
+  "remoteUser": "vscode"
 }

@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# Install Visual Studio Code
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
+sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+sudo apt update
+sudo apt install code -y
+
+if ! command -v brew >/dev/null 2>&1; then
+  echo "Installing Homebrew..."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+{{ if eq .host.arch "arm64" -}}
+eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+{{- else }}
+eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+{{- end }}
+
+brew update
+brew bundle --verbose --no-lock --file=/dev/stdin <<EOF
+{{ includeTemplate "debian/brewfile" . }}
+EOF
+
+{{- if .host.interactive }}
+brew upgrade
+brew cleanup
+{{- end -}}

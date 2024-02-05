@@ -1,0 +1,276 @@
+// -*-mode:javascript-*- vim:ft=javascript
+
+// ~/.hyper.js
+// ============================================================================
+// Hyper.js terminal.
+//
+// Reference: https://hyper.is#cfg
+//
+// {{- /* This file supports Go's text/template language. */}}
+
+module.exports = {
+  config: {
+    // Set either `stable` for receiving highly polished,
+    // or `canary` for less polished but more frequent updates.
+    updateChannel: 'stable',
+
+    // Set default font size in pixels for all tabs.
+    fontSize: '{{ if eq .chezmoi.os "darwin" -}} 12 {{- else -}} 14 {{- end }}',
+
+    // Set preferred font family with optional fallbacks.
+    fontFamily: '"Source Code Pro for Powerline", Menlo, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
+
+    // Set default font weight: `normal` or `bold`.
+    fontWeight: 'normal',
+
+    // Set font weight for bold characters: `normal`` or `bold`.
+    fontWeightBold: 'bold',
+
+    // Set line height as a relative unit.
+    lineHeight: 1,
+
+    // Set letter spacing as a relative unit.
+    letterSpacing: 0,
+
+    // Set terminal cursor background color and opacity
+    // (hex, rgb, hsl, hsv, hwb or cmyk);
+    cursorColor: 'rgba(248,28,229,0.8)',
+
+    // Terminal text color under BLOCK cursor.
+    cursorAccentColor: '#000',
+
+    // Set cursor style: `BEAM` for |, `UNDERLINE` for _, `BLOCK` for █.
+    cursorShape: 'BLOCK',
+
+    // Make the cussor blink.
+    cursorBlink: true,
+
+    // Set text color.
+    foregroundColor: '#fff',
+
+    // Set terminal background color. Opacity is only supported on macOS.
+    backgroundColor: '#000',
+
+    // Set terminal selection color.
+    selectionColor: 'rgba(248,28,229,0.3)',
+
+    // Set border color (window, tabs).
+    borderColor: '#333',
+
+    // Define custom CSS to embed in the main window.
+    css: '',
+
+    // Define custom CSS to embed in the terminal window.
+    termCSS: '',
+
+    // Set custom startup directory (must be an absolute path).
+    workingDirectory: '',
+
+    // Show a menu icon.
+    // Default '': `true` on Linux, `true` on Windows, ignored on macOS.
+    // If you're using a Linux setup which show native menus, set to false.
+    showHamburgerMenu: '',
+
+    // Show minimize, maximize and close buttons.
+    // Set to `left` if you want them on the left, like in Ubunt.u
+    // Default '': `true` on Windows and Linux, ignored on macOS.
+    showWindowControls: '',
+
+    // Set custom padding (CSS format, i.e.: `top right bottom left`).
+    padding: '1.0em 0.5em 2.5em 0.5em',
+
+    // Define the color palette.
+    // If you're going to provide the full color palette (including the
+    // 6 x 6 color cubes and the grayscale map) just provide an array here
+    // instead of a color map object.
+    colors: {
+      black: '#000000',
+      red: '#C51E14',
+      green: '#1DC121',
+      yellow: '#C7C329',
+      blue: '#0A2FC4',
+      magenta: '#C839C5',
+      cyan: '#20C5C6',
+      white: '#C7C7C7',
+      lightBlack: '#686868',
+      lightRed: '#FD6F6B',
+      lightGreen: '#67F86F',
+      lightYellow: '#FFFA72',
+      lightBlue: '#6A76FB',
+      lightMagenta: '#FD7CFC',
+      lightCyan: '#68FDFE',
+      lightWhite: '#FFFFFF',
+      limeGreen: '#32CD32',
+      lightCoral: '#F08080',
+    },
+
+    // Define which shell to run when spawning a new session.
+    // If left empty, your system's login shell will be used by default.
+    //
+    // Windows:
+    // - Make sure to use a full path if the binary name doesn't work
+    // - Remove `--login` in shellArgs
+    //
+    // Bash:
+    // - `bash`
+    // - `/bin/bash`
+    // - `/usr/local/bin/bash`
+    // - `C:\\Windows\\System32\\bash.exe`
+    // - `C:\\Program Files\\Git\\git-cmd.exe`
+    // - `C:\\cygwin64\\bin\\bash.exe`
+    //
+    // CMD:
+    // - `C:\\WINDOWS\\system32\\cmd.exe`
+    //
+    // Fish:
+    // - `/usr/local/bin/fish`
+    //
+    // PowerShell on Windows:
+    // - `C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe`
+    //
+    // PowerShell Core:
+    // - `pwsh`
+    // - `/usr/local/bin/pwsh`
+    // - `C:\\Program Files\\PowerShell\\6\\pwsh.exe`
+    //
+    // Windows Subsystem for Linux (previously Bash on Windows):
+    // - `C:\\Windows\\System32\\wsl.exe`
+    //
+    // Zsh:
+    // - `zsh`
+    // - `/bin/zsh`
+    shell: '{{ if eq .chezmoi.os "windows" -}} pwsh {{- else -}} zsh {{- end }}',
+
+    // Define any shell arguments.
+    // Default `['--login']`.
+    // For interactive: `['-i']`.
+    // Set to [] for Windows.
+    shellArgs: ['{{ if ne .chezmoi.os "windows" -}} --login {{- end }}'],
+
+    // Declare environment variables.
+    env: {},
+
+    // Set the warning type: `SOUND` for audible bell, `false` to disable.
+    bell: 'SOUND',
+
+    // Select a local sound file (absolute file path or URL).
+    // bellSoundURL: '/path/to/sound/file',
+
+    // Automatically copy selected text to the clipboard.
+    copyOnSelect: false,
+
+    // Set hyper as as the default protocol client for SSH.
+    defaultSSHApp: true,
+
+    // Use the right click to copy selected text, or paste clipboard if no
+    // selection is present.
+    // Default: `true` on Windows and disables the context menu feature.
+    quickEdit: false,
+
+    // Define selection type when Option key is held.
+    // Choose `vertical` if you want the column mode when Option key is held
+    // during selection (Default),
+    // or `force` if you want to force selection regardless of whether the
+    // terminal is in mouse events mode (inside tmux or vim with mouse mode
+    // enabled for example).
+    macOptionSelectionMode: 'vertical',
+
+    // Use the WebGL renderer.
+    // Set to false to use canvas-based rendering (slower, but supports
+    // transparent backgrounds).
+    webGLRenderer: true,
+
+    // Ignore ligatures provided by some fonts.
+    disableLigatures: false,
+
+    // Configure the Status line plugin.
+    // See https://github.com/Hyperline/hyperline
+    hyperline: {
+      // List names and order of plugins to enable.
+      plugins: [
+        "ip",
+        "memory",
+        "cpu",
+        "network"
+      ]
+    },
+
+    // Configure the Enhanced Tabs plugin.
+    // See https://github.com/henrikdahl/hyper-tabs-enhanced
+    hyperTabs: {
+      // Set activity color.
+      // activityColor: 'salmon',
+
+      // Show activity indicator.
+      // Default is `true`.
+      activityPulse: true,
+
+      // Enable the border.
+      // Default is `false`.
+      border: true,
+
+      // Position the close button.
+      // Default is `left`.
+      closeAlign: 'right',
+
+      // Add colors to tab icons.
+      // Default is `false`.
+      tabIconsColored: false,
+
+      // Show minimize, maximize and close buttons.
+      // Default is `false`.
+      trafficButtons: true
+    },
+
+    // Configure the Hyper Monokai Deluxe theme.
+    // See https://github.com/hummal/hyper-monokai-deluxe
+    monokaiDeluxe: {
+      // Adjust the thickness of the border around the whole window.
+      // Default: `2px`.
+      borderWidth: '2px',
+
+      // Select theme: 'default', 'reloaded'.
+      theme: 'reloaded'
+    }
+  },
+
+  // List plugins to fetch and install from npm.
+  // format: [@org/]project[#version]
+  // examples:
+  //   `hyperpower`
+  //   `@company/project`
+  //   `project#1.0.1`
+  plugins: [
+    "hyper-active-tab",
+    "hyper-dark-scrollbar",
+    "hyper-highlight-active-pane",
+    "hyper-monokai-deluxe",
+    "hyper-pane",
+    "hyper-quit",
+    "hyper-reorderable-tabs",
+    "hyper-search",
+    "hyper-statusline",
+    "hyper-tabs-enhanced",
+    "hypercwd",
+    "hyperterm-paste"
+  ],
+
+  // in development, you can create a directory under
+  // `~/.hyper_plugins/local/` and include it here
+  // to load it and avoid it being `npm install`ed
+  localPlugins: [],
+
+  keymaps: {
+    // Example
+    // 'window:devtools': 'cmd+alt+o',
+  },
+
+  hyperTabs: {
+    trafficButtons: true,
+    tabIconsColored: true,
+  },
+
+  hypercwd: {
+      initialWorkingDirectory: '~'
+  },
+};

@@ -3,12 +3,12 @@ MIT License
 Copyright (c) for portions of project are documented inline and held by the
 following people:
 
-* 2021, René-Marc Simard (https://github.com/renemarc/dotfiles)
-* 2021, Tom Payne (https://github.com/twpayne/dotfiles)
+- 2021, René-Marc Simard (https://github.com/renemarc/dotfiles)
+- 2021, Tom Payne (https://github.com/twpayne/dotfiles)
 
 All other copyright (c) is held by:
 
-* 2021, William Hearn  (https://github.com/sylus)
+- 2024, William Hearn (https://github.com/sylus)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

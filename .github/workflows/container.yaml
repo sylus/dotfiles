@@ -1,0 +1,170 @@
+name: Container
+
+on:
+    push:
+        branches:
+            - main
+            - feature/*
+    pull_request:
+        branches:
+            - main
+    schedule:
+        - cron: "0 23 * * 6"
+    workflow_dispatch:
+        inputs:
+            publish-image:
+                description: Publish a container image
+                required: true
+                default: false
+                type: boolean
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+    cancel-in-progress: true
+
+env:
+    PLATFORMS: linux/arm64,linux/amd64
+    PUBLISH_IMAGE: ${{ (github.event_name == 'push' && github.ref_name == 'main') || github.event.inputs.publish-image == 'true' }}
+
+jobs:
+    changes:
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        outputs:
+            matrix: ${{ steps.set-matrix.outputs.matrix }}
+        steps:
+            - name: Checkout
+              uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
+
+            - name: Paths Filter
+              uses: dorny/paths-filter@4512585405083f25c027a35db413c2b3b9006d50 # v2.11.1
+              id: filter
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  base: ${{ github.event.pull_request.base.ref || github.base_ref || github.ref }}
+                  filters: |
+                      shared: &shared
+                        - 'home/.chezmoi*'
+                        - 'home/.chezmoiscripts/universal/**'
+                        - 'home/.chezmoitemplates/universal/**'
+                        - 'home/dot_*/**'
+                        - 'home/private_dot_*/**'
+                        - 'install.sh'
+                        - '.github/workflows/container.yaml'
+                      debian:
+                        - *shared
+                        - 'home/.chezmoiscripts/debian/*'
+                        - 'home/.chezmoitemplates/debian/*'
+                        - 'containers/debian/**/*'
+                      ubuntu:
+                        - *shared
+                        - 'home/.chezmoiscripts/ubuntu/*'
+                        - 'home/.chezmoitemplates/ubuntu/*'
+                        - 'containers/ubuntu/Dockerfile'
+
+            - name: Set Matrix
+              id: set-matrix
+              run: |
+                  MATRIX=$(echo '${{ steps.filter.outputs.changes }}' | jq -c 'del(.[] | select(. == "shared")) | {os: select(length > 0) }')
+                  echo matrix="$MATRIX" >> $GITHUB_OUTPUT
+
+    docker-build:
+        needs: [changes]
+        if: ${{ needs.changes.outputs.matrix != '' && needs.changes.outputs.matrix != '[]' }}
+        strategy:
+            matrix: ${{ fromJSON(needs.changes.outputs.matrix) }}
+            fail-fast: false
+        runs-on: ubuntu-22.04
+        timeout-minutes: 60
+        services:
+            registry:
+                image: registry:2
+                ports:
+                    - 5000:5000
+        steps:
+            - name: Checkout
+              uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
+
+            - name: Set up QEMU
+              uses: docker/setup-qemu-action@e81a89b1732b9c48d79cd809d8d81d79c4647a18 # v2
+
+            - name: Setup Docker Buildx
+              id: buildx
+              uses: docker/setup-buildx-action@8c0edbc76e98fa90f69d9a2c020dcb50019dc325 # v2
+              with:
+                  driver-opts: network=host
+                  install: true
+                  platforms: ${{ env.PLATFORMS }}
+
+            - name: Cache Docker Layers
+              uses: actions/cache@c1a5de879eb890d062a85ee0252d6036480b1fe2 # v3
+              with:
+                  path: /tmp/.buildx-cache
+                  key: ${{ matrix.os }}-buildx-${{ github.sha }}
+                  restore-keys: |
+                      ${{ matrix.os }}-buildx
+
+            - name: Login to DockerHub
+              uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a # v2
+              with:
+                  username: ${{ secrets.DOCKERHUB_USERNAME }}
+                  password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+            - name: Login to GitHub Container Registry
+              uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a # v2
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.repository_owner }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Build and Export to Local Docker Registry
+              uses: docker/build-push-action@c56af957549030174b10d6867f20e78cfd7debc5 # v3
+              with:
+                  file: containers/${{ matrix.os }}/Dockerfile
+                  context: .
+                  push: true
+                  platforms: ${{ env.PLATFORMS }}
+                  tags: localhost:5000/${{ matrix.os }}:latest
+                  secrets: |
+                      "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+                  builder: ${{ steps.buildx.outputs.name }}
+                  cache-from: type=local,src=/tmp/.buildx-cache
+                  cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
+
+            - name: Run Tests amd64
+              run: docker run --rm --platform amd64 localhost:5000/${{ matrix.os }}:latest /home/devcontainer/.local/bin/check-dotfiles
+
+            - name: Run Tests arm64
+              run: docker run --rm --platform arm64 localhost:5000/${{ matrix.os }}:latest /home/devcontainer/.local/bin/check-dotfiles
+
+            - name: Generate Image Metadata
+              id: metadata
+              uses: docker/metadata-action@57396166ad8aefe6098280995947635806a0e6ea # v4
+              with:
+                  images: |
+                      ghcr.io/${{ github.repository }}
+                      docker.io/${{ github.repository }}
+                  tags: |
+                      type=schedule,prefix=${{ matrix.os }}-,pattern={{date 'YYYYMMDD'}}
+                      type=raw,value=${{ matrix.os }},enable={{is_default_branch}}
+                  flavor: latest=${{ github.ref_name == 'main' && contains(matrix.os, 'ubuntu') }}
+
+            - name: Push Image
+              uses: docker/build-push-action@c56af957549030174b10d6867f20e78cfd7debc5 # v3
+              with:
+                  file: containers/${{ matrix.os }}/Dockerfile
+                  context: .
+                  push: ${{ env.PUBLISH_IMAGE }}
+                  platforms: ${{ env.PLATFORMS }}
+                  tags: ${{ steps.metadata.outputs.tags }}
+                  labels: ${{ steps.metadata.outputs.labels }}
+                  secrets: |
+                      "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+                  builder: ${{ steps.buildx.outputs.name }}
+                  cache-from: type=local,src=/tmp/.buildx-cache
+                  cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
+
+            - name: Move Docker Cache
+              run: |
+                  rm -rf /tmp/.buildx-cache
+                  mv /tmp/.buildx-cache-new /tmp/.buildx-cache

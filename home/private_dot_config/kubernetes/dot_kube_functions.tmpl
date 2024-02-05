@@ -1,0 +1,13 @@
+# -*-mode:bash-*- vim:ft=bash
+
+# ~/.config/kubernetes/.kube_functions
+# =============================================================================
+# Kubernetes shell functions.
+
+kralpine () {
+  kubectl run -i --rm --tty alpine --image=alpine -- sh
+}
+
+kexec () {
+  kubectl exec -it $1 -- ${2:-bash}
+}

@@ -1,0 +1,52 @@
+{
+    "git.confirmSync": false,
+    "editor.renderWhitespace": "all",
+    "explorer.confirmDragAndDrop": false,
+    "gitlens.keymap": "chorded",
+    "git.autofetch": true,
+    "gitlens.advanced.messages": {
+        "suppressCommitHasNoPreviousCommitWarning": false,
+        "suppressCommitNotFoundWarning": false,
+        "suppressFileNotUnderSourceControlWarning": false,
+        "suppressGitVersionWarning": false,
+        "suppressLineUncommittedWarning": false,
+        "suppressNoRepositoryWarning": false
+    },
+    "editor.fontLigatures": true,
+    "editor.suggestSelection": "first",
+    "editor.minimap.enabled": true,
+    "editor.renderControlCharacters": false,
+    "[json]": {
+        "editor.defaultFormatter": "HookyQR.beautify"
+    },
+    "go.formatTool": "goimports",
+    "go.useLanguageServer": true,
+    "vsicons.dontShowNewVersionMessage": true,
+    "editor.multiCursorModifier": "ctrlCmd",
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.python"
+    },
+    "python.linting.flake8Enabled": true,
+    "python.testing.cwd": "",
+    "python.languageServer": "Default",
+    "python.defaultInterpreterPath": "/usr/local/bin/python3",
+    "jupyter.allowUnauthorizedRemoteConnection": true,
+    "jupyter.variableQueries": [],
+    "security.workspace.trust.untrustedFiles": "open",
+    "workbench.commandPalette.history": 75,
+    "files.trimTrailingWhitespace": true,
+    "gitlens.blame.ignoreWhitespace": true,
+    "powershell.codeFormatting.trimWhitespaceAroundPipe": true,
+    "redhat.telemetry.enabled": false,
+    "telemetry.enableCrashReporter": false,
+    "telemetry.enableTelemetry": false,
+    "editor.fontFamily": "'Fira Code'",
+    "terraform.languageServer.enable": true,
+    "terraform.languageServer.path": "",
+    "gitlens.views.commitDetails.files.layout": "tree",
+    "workbench.colorTheme": "Monokai Pro",
+    "workbench.iconTheme": "Monokai Pro Icons",
+    "npm.enableRunFromFolder": true,
+    "gitlens.views.repositories.includeWorkingTree": true,
+    "extensions.verifySignature": false
+}

@@ -1,0 +1,60 @@
+# Global SSH configuration settings
+Host *
+  # Disable password authentication (use key-based authentication only)
+  PasswordAuthentication no
+
+  # Set a reasonable connection timeout (adjust as needed)
+  ConnectTimeout 15
+
+  # Automatically close idle connections
+  ServerAliveInterval 60
+  ServerAliveCountMax 3
+
+  # Prevent SSH from using insecure SSHv1 protocol
+  Protocol 2
+
+{{- if eq .host.distro.family "darwin" }}
+  # Use macOS Keychain for SSH keys
+  UseKeychain yes
+
+  # Automatically add loaded SSH keys to the SSH agent
+  AddKeysToAgent yes
+{{- end }}
+
+  # Disable SSH agent forwarding by default
+  ForwardAgent no
+
+  # Disable X11 forwarding by default
+  ForwardX11 no
+
+  # Hash known hosts entries
+  HashKnownHosts yes
+
+  # Enforce strict host key checking
+  StrictHostKeyChecking ask
+
+  # AllowPrivilegedPort no
+  UsePrivilegedPort no
+
+  # Increase logging verbosity
+  LogLevel VERBOSE
+
+  # Enable TCP keep-alive
+  TCPKeepAlive yes
+
+  # Disable SSH compression
+  Compression yes
+
+  # Set limits for key renegotiation
+  RekeyLimit 1G 1h
+
+  # Enable GSSAPI-based authentication (Kerberos)
+  GSSAPIAuthentication yes
+
+# Drupal SSH configuration settings
+Host git.drupal.org
+  # Use a specific IdentityFile (private key) for authentication
+  IdentityFile "~/.ssh/drupal"
+
+  # Optionally, define a custom port (default is 22)
+  Port 22

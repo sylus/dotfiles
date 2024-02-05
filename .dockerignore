@@ -1,0 +1,10 @@
+# ~/.local/share/chezmoi/.dockerignore
+# =============================================================================
+# Used to exclude files and directories from the build context.
+#
+# Reference: https://docs.docker.com/engine/reference/builder/#dockerignore-file
+
+*
+!home
+!.chezmoi*
+!install.sh

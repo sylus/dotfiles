@@ -1,0 +1,77 @@
+{{- $taps := list -}}
+{{- $brews := list -}}
+{{- $casks := list -}}
+
+
+{{- $taps := list
+"homebrew/autoupdate"
+"homebrew/bundle"
+"homebrew/cask"
+"homebrew/cask-fonts"
+"homebrew/cask-versions"
+"homebrew/command-not-found"
+-}}
+
+{{- $brews := splitList " " (includeTemplate "universal/packages" .) }}
+{{- $brews :=  without $brews "ack" "age" "exa" "qemu" "telnet" -}}
+
+{{- $brews :=  concat $brews (list
+  "bash"
+  "bash-completion@2"
+  "gpatch"
+  "gnupg"
+  "gnu-sed"
+  "gnutls"
+  "grep"
+  "hugo"
+  "jq"
+  "tmux"
+  "yq"
+  "sqlite"
+) -}}
+
+{{- if .toolchains.iac -}}
+  {{- $brews = concat $brews (list "terraform" "terraform-docs" "terraform-ls" "tfk8s") -}}
+{{- end -}}
+
+{{- if .toolchains.docker -}}
+  {{- $brews = concat $brews (list "docker" "docker-compose") -}}
+{{- end -}}
+
+{{- if .toolchains.golang -}}
+  {{- $brews = concat $brews (list "go") -}}
+{{- end -}}
+
+{{- if .toolchains.kubernetes -}}
+  {{- $brews = concat $brews (list "etcd" ) -}}
+{{- end -}}
+
+{{- if .toolchains.node -}}
+  {{- $brews = concat $brews (list "node" "npm" "nvm" "yarn") -}}
+{{- end -}}
+
+{{- if .toolchains.php -}}
+  {{- $brews = concat $brews (list "php") -}}
+{{- end -}}
+
+{{- if .toolchains.python -}}
+  {{- $brews = concat $brews (list "python" "codespell" "pre-commit") -}}
+{{- end -}}
+
+{{- $casks := list
+
+-}}
+
+{{- range ($taps | sortAlpha | uniq) }}
+tap "{{ . }}"
+{{- end }}
+
+{{ range ($brews | sortAlpha | uniq) }}
+brew "{{ . }}"
+{{- end }}
+
+{{- if not .host.headless -}}
+{{- range ($casks | sortAlpha | uniq) }}
+cask "{{ . }}"
+{{- end }}
+{{- end -}}

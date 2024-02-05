@@ -1,0 +1,5 @@
+README.md
+install.sh
+.chezmoiscripts/*/**
+!.chezmoiscripts/{{ .host.distro.id }}/**
+!.chezmoiscripts/universal/**

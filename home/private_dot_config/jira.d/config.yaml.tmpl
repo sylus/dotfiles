@@ -1,0 +1,75 @@
+project: CN
+
+custom-commands:
+  - name: print-project
+    help: print the JIRA environment variables available to custom commands
+    script: |
+      echo $JIRA_PROJECT
+  - name: assigned
+    help: List of my assigned tickets
+    script: |
+      {{ "{{" }}jira{{ "}}" }}  list --template table --query "resolution = unresolved AND assignee=currentuser() ORDER BY updated DESC"
+  - name: support-queue
+    aliases:
+      - sq
+    help: List of Cloud Native support tickets
+    script: |
+      {{ "{{" }}jira{{ "}}" }}  list --template table --query 'project in (CLOUD, ICP) AND resolution = Unresolved AND component in ("Cloud Native", Kubernetes, Containers) AND (Labels is EMPTY OR Labels != Onboarding) AND component != "Security Controls" ORDER BY Created DESC'
+  - name: cloud
+    help: List of Cloud support tickets
+    script: |
+      {{ "{{" }}jira{{ "}}" }}  list --template table --query 'project in (CLOUD, ICP, CN) ORDER BY Created DESC' --limit 25
+  - name: reject
+    help: Transition a ticket to the Rejected state
+    options:
+      - name: resolution
+        type: string
+    args:
+      - name: ISSUE
+        required: true
+    script: |
+      {{ "{{" }}jira{{ "}}" }} transition --noedit {{ "{{" }} if options.resolution {{ "}}" }} --resolution="{{ "{{" }} options.resolution {{ "}}" }}"{{ "{{" }} end {{ "}}" }} "Reject" {{ "{{" }} args.ISSUE {{ "}}" }}
+  - name: review
+    help: Transition a ticket to the "Under Review" state
+    args:
+      - name: ISSUE
+        required: true
+    script: |
+      {{ "{{" }}jira{{ "}}" }} transition --noedit "Under Review" {{ "{{" }} args.ISSUE {{ "}}" }}
+  - name: approve
+    help: Transition a ticket to the Approved state
+    args:
+      - name: ISSUE
+        required: true
+    script: |
+      {{ "{{" }}jira{{ "}}" }} transition --noedit "Approved" {{ "{{" }} args.ISSUE {{ "}}" }}
+  - name: platform-component-upgrade
+    help: Create a Task and associated Sub Tasks for a platform component upgrade.
+    args:
+      - name: COMPONENT
+        required: true
+      - name: VERSION
+        required: true
+    script: |
+      TASK_KEY=$({{ "{{" }}jira{{ "}}" }} create --project="$JIRA_PROJECT" \
+                  --issuetype="Task" \
+                  -o summary="Upgrade {{ "{{" }} args.COMPONENT {{ "}}" }} to {{ "{{" }} args.VERSION {{ "}}" }}" \
+                  -o description="Upgrade {{ "{{" }} args.COMPONENT {{ "}}" }} to {{ "{{" }} args.VERSION {{ "}}" }}." \
+                  -o assignee="$JIRA_USER" \
+                  -o reporter="$JIRA_USER" \
+                  -o priority="Minor" \
+                  --noedit | cut -d' ' -f2)
+
+      echo "Created Task: " $TASK_KEY
+
+      for environment in Infratest Development Test Production Management "AAW Development" "AAW Production"
+      do
+        {{ "{{" }}jira{{ "}}" }} subtask $TASK_KEY \
+                    --project="$JIRA_PROJECT" \
+                    -o summary="[$environment] Upgrade {{ "{{" }} args.COMPONENT {{ "}}" }} to {{ "{{" }} args.VERSION {{ "}}" }}" \
+                    -o description="Upgrade {{ "{{" }} args.COMPONENT {{ "}}" }} to {{ "{{" }} args.VERSION {{ "}}" }}." \
+                    -o assignee="$JIRA_USER" \
+                    -o reporter="$JIRA_USER" \
+                    -o priority="Minor" \
+                    --noedit
+      done

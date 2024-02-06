@@ -66,12 +66,12 @@ USER $USER
 
 COPY --chown=$USER:$USER . .local/share/chezmoi
 
-# RUN --mount=type=secret,id=GITHUB_TOKEN,dst=/run/secrets/github_token,uid=$UID \
-#     GITHUB_ACCESS_TOKEN=$(cat /run/secrets/github_token) \
-#     GITHUB_API_TOKEN=$(cat /run/secrets/github_token) \
-#     GITHUB_TOKEN=$(cat /run/secrets/github_token) \
-#     WITHOUT_TOOLCHAINS=true \
-#     .local/share/chezmoi/install.sh --data=false \
-#     && sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/* /var/log/* /tmp/*
+RUN --mount=type=secret,id=GITHUB_TOKEN,dst=/run/secrets/github_token,uid=$UID \
+    GITHUB_ACCESS_TOKEN=$(cat /run/secrets/github_token) \
+    GITHUB_API_TOKEN=$(cat /run/secrets/github_token) \
+    GITHUB_TOKEN=$(cat /run/secrets/github_token) \
+    WITHOUT_TOOLCHAINS=false \
+    .local/share/chezmoi/install.sh --data=false \
+    && sudo rm -rf /var/lib/apt/lists/* /var/cache/apt/* /var/log/* /tmp/*
 
 CMD /bin/zsh

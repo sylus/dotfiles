@@ -14,6 +14,11 @@ eval $(/usr/local/bin/brew shellenv)
 {{- end }}
 
 brew update
+
+# Temporary Overrides
+brew install --overwrite python@3.11
+brew install --overwrite go
+
 brew bundle --verbose --no-lock --file=/dev/stdin <<EOF
 {{ includeTemplate "darwin/brewfile" . }}
 EOF

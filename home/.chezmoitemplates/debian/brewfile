@@ -13,7 +13,7 @@
 -}}
 
 {{- $brews := splitList " " (includeTemplate "universal/packages" .) }}
-{{- $brews :=  without $brews "ack" "age" "exa" "qemu" "telnet" -}}
+{{- $brews :=  without $brews "ack" "age" "qemu" "telnet" -}}
 
 {{- $brews :=  concat $brews (list
   "bash"

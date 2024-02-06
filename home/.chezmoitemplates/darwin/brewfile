@@ -15,6 +15,7 @@
 {{- $brews := splitList " " (includeTemplate "universal/packages" .) }}
 
 {{- $brews :=  concat $brews (list
+  "base64"
   "bash"
   "bash-completion@2"
   "dockutil"

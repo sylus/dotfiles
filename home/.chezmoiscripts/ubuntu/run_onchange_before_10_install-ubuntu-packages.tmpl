@@ -27,3 +27,9 @@ EOF
 brew upgrade
 brew cleanup
 {{- end -}}
+
+{{- if eq .host.type "wsl" }}
+if [ ! -L /usr/local/bin/xdg-open ]; then
+  sudo ln -s /usr/bin/wslview /usr/local/bin/xdg-open
+fi
+{{- end -}}

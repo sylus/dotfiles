@@ -12,7 +12,7 @@
 # shellcheck shell=bash
 # shellcheck source=/dev/null
 
-# Load configuration bulk from non-login shell.
+# Load configuration from non-login shell.
 if [ -n "$BASH_VERSION" ]; then
     if [ -f "$HOME/.config/shell/.bashrc" ]; then
         . "$HOME/.config/shell/.bashrc"

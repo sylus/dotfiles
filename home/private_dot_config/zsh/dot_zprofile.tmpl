@@ -1,7 +1,6 @@
-{{- if eq .chezmoi.os "linux" -}}
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-{{- end }}
-
-{{- if eq .chezmoi.os "darwin" -}}
-eval "$(/opt/homebrew/bin/brew shellenv)"
-{{- end }}
+# Load configuration from non-login shell.
+if [ -n "$ZSH_VERSION" ]; then
+    if [ -f "$HOME/.config/zsh/.zshrc" ]; then
+        . "$HOME/.config/zsh/.zshrc"
+    fi
+fi

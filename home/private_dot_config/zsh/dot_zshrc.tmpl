@@ -15,12 +15,16 @@
 
 export HOMEBREW_NO_AUTO_UPDATE=1
 
-{{ if eq .chezmoi.os "linux" -}}
+{{- if eq .chezmoi.os "linux" }}
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 {{- end }}
 
-{{ if eq .chezmoi.os "darwin" -}}
+{{- if eq .chezmoi.os "darwin" }}
+{{- if eq .host.arch "arm64" }}
 eval "$(/opt/homebrew/bin/brew shellenv)"
+{{- else }}
+eval "$(/usr/local/bin/brew shellenv)"
+{{- end }}
 {{- end }}
 
 # Powerlevel10k Configuration
@@ -131,13 +135,12 @@ setopt rm_star_silent
 # -----------------------------------------------------------------------------
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
 
 # Python Configuration
 # -----------------------------------------------------------------------------
 
 ln -sf "$(brew --prefix)/bin/python"{3,}
+
 
 # Includes
 # -----------------------------------------------------------------------------
@@ -157,6 +160,7 @@ if [ -f "$HOME"/.config/shell/.bash_functions ]; then
     \. "$HOME"/.config/shell/.bash_functions
 fi
 
+{{- if eq .chezmoi.os "linux" }}
 {{- if .toolchains.kubernetes }}
 # Load cross-compatible Kubernetes alias definitions from separate file.
 if [ -f "$HOME"/.config/kubernetes/.kube_aliases ]; then
@@ -167,4 +171,5 @@ fi
 if [ -f "$HOME"/.config/kubernetes/.kube_functions ]; then
     \. "$HOME"/.config/kubernetes/.kube_functions
 fi
+{{- end }}
 {{- end }}

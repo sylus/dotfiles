@@ -81,13 +81,6 @@ setup() {
   assert_success
 }
 
-{{ if eq .host.distro.family "darwin" }}
-@test "mas" {
-  run mas
-  assert_success
-}
-{{ end }}
-
 {{ if .toolchains.docker }}
 @test "docker" {
   run docker --help

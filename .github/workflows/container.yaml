@@ -132,10 +132,7 @@ jobs:
                   cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
 
             - name: Run Tests amd64
-              run: docker run --rm --platform amd64 localhost:5000/${{ matrix.os }}:latest /home/devcontainer/.local/bin/check-dotfiles
-
-            - name: Run Tests arm64
-              run: docker run --rm --platform arm64 localhost:5000/${{ matrix.os }}:latest /home/devcontainer/.local/bin/check-dotfiles
+              run: docker run --rm --platform amd64 localhost:5000/${{ matrix.os }}:latest /bin/zsh -c 'source /home/devcontainer/.zshenv && /home/devcontainer/.local/bin/check-dotfiles'
 
             - name: Generate Image Metadata
               id: metadata

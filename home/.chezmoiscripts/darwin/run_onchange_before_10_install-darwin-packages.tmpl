@@ -1,13 +1,23 @@
 #!/usr/bin/env bash
 
+# Install XCode
 xcode-select -p >/dev/null 2>&1 || xcode-select --install
+
+{{- if .host.headless }}
+# Install Visual Studio Code
+curl -fsSL -o vscode.zip https://code.visualstudio.com/sha/download?build=stable\&os=darwin-universal
+unzip -q vscode.zip
+rm vscode.zip
+mv "Visual Studio Code.app" /Applications/
+ln -s "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" /usr/local/bin/code
+{{- end }}
 
 if ! command -v brew >/dev/null 2>&1; then
   echo "Installing Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-{{ if eq .host.arch "arm64" -}}
+{{- if eq .host.arch "arm64" }}
 eval $(/opt/homebrew/bin/brew shellenv)
 {{- else }}
 eval $(/usr/local/bin/brew shellenv)
@@ -17,6 +27,7 @@ brew update
 
 # Temporary Overrides
 brew install --overwrite python@3.11
+brew install --overwrite python@3.12
 brew install --overwrite go
 
 brew bundle --verbose --no-lock --file=/dev/stdin <<EOF

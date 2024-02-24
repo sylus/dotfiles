@@ -76,5 +76,16 @@ jobs:
                   HOMEBREW_NO_INSTALL_CLEANUP: 1
               run: ./install.sh
 
-            - name: Run tests
-              run: ~/.local/bin/check-dotfiles
+            - name: Switch to ZSH
+              if: runner.os == 'Linux'
+              shell: /home/linuxbrew/.linuxbrew/bin/zsh {0}
+              run: |
+                source ~/.zshenv
+                ~/.local/bin/check-dotfiles
+
+            - name: Switch to ZSH
+              if: runner.os == 'macOS'
+              shell: /usr/local/bin/zsh {0}
+              run: |
+                source ~/.zshenv
+                ~/.local/bin/check-dotfiles

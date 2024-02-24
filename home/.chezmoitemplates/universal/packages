@@ -1,6 +1,7 @@
 {{- $packages := list
   "ack"
   "age"
+  "awk"
   "bash"
   "bat"
   "cmake"
@@ -30,6 +31,7 @@
   "watch"
   "wget"
   "zplug"
+  "zsh"
   "zsh-autosuggestions"
   "zsh-syntax-highlighting"
 -}}

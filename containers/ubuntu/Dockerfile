@@ -15,6 +15,7 @@ RUN set -eux \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
               apt-transport-https \
               bash \
+              build-essential \
               ca-certificates \
               curl \
               dialog \

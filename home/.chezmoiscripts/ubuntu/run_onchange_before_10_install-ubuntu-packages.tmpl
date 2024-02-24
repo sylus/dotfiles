@@ -12,7 +12,7 @@ if ! command -v brew >/dev/null 2>&1; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-{{ if eq .host.arch "arm64" -}}
+{{- if eq .host.arch "arm64" }}
 eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 {{- else }}
 eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)

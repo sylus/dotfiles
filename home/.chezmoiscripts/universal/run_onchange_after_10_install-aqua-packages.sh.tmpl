@@ -20,5 +20,5 @@ fi
 aqua install -a
 
 {{- if .toolchains.kubernetes }}
-krew install > ~/.config/krew/Krewfile
+krew install < ~/.config/krew/Krewfile
 {{- end -}}

@@ -12,6 +12,8 @@ export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_RUNTIME_DIR=
 {{- if (eq .chezmoi.os "darwin") -}}
   "$TMPDIR"
+{{- else if eq .host.type "wsl" -}}
+  "/tmp"  # WSL often lacks /run/user directories
 {{- else if not .host.headless -}}
   "/run/user/$(id -u)"
 {{- else -}}

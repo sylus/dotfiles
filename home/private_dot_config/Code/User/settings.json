@@ -48,5 +48,16 @@
     "workbench.iconTheme": "Monokai Pro Icons",
     "npm.enableRunFromFolder": true,
     "gitlens.views.repositories.includeWorkingTree": true,
-    "extensions.verifySignature": false
+    "extensions.verifySignature": false,
+    "[markdown]": {
+        "editor.defaultFormatter": "fcrespo82.markdown-table-formatter"
+    },
+    "explorer.confirmDelete": false,
+    "cSpell.userWords": [
+        "Fortigate"
+    ],
+    "terminal.integrated.fontLigatures": true,
+    "terminal.integrated.copyOnSelection": true,
+    "terminal.integrated.cursorBlinking": true,
+    "terminal.integrated.smoothScrolling": true
 }

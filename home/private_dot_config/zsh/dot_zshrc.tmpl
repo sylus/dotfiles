@@ -10,6 +10,9 @@
 # shellcheck source=/dev/null
 # shellcheck disable=SC2034
 
+# Profiling
+# zmodload zsh/zprof
+
 # Brew Configuration
 # -----------------------------------------------------------------------------
 
@@ -39,7 +42,6 @@ fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
-{{/* vim: set filetype=zsh: */}}
 
 # OH-MY-ZSH Configuration
 # -----------------------------------------------------------------------------
@@ -99,7 +101,6 @@ ZSH_DISABLE_COMPFIX=true
 plugins=(
   colored-man-pages
   common-aliases
-  composer
   docker
   docker-compose
   git
@@ -141,7 +142,6 @@ export NVM_DIR="$HOME/.nvm"
 
 ln -sf "$(brew --prefix)/bin/python"{3,}
 
-
 # Includes
 # -----------------------------------------------------------------------------
 
@@ -173,3 +173,9 @@ if [ -f "$HOME"/.config/kubernetes/.kube_functions ]; then
 fi
 {{- end }}
 {{- end }}
+
+# Profiling
+# zprof
+
+# zsh plugins
+source $ZSH/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

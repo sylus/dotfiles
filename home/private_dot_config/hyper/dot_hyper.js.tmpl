@@ -18,7 +18,7 @@ module.exports = {
     fontSize: '{{ if eq .chezmoi.os "darwin" -}} 12 {{- else -}} 14 {{- end }}',
 
     // Set preferred font family with optional fallbacks.
-    fontFamily: '"Source Code Pro for Powerline", Menlo, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
+    fontFamily: '"Fira Code", "Source Code Pro for Powerline", Menlo, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
 
     // Set default font weight: `normal` or `bold`.
     fontWeight: 'normal',
@@ -178,7 +178,7 @@ module.exports = {
     // Use the WebGL renderer.
     // Set to false to use canvas-based rendering (slower, but supports
     // transparent backgrounds).
-    webGLRenderer: true,
+    webGLRenderer: false,
 
     // Ignore ligatures provided by some fonts.
     disableLigatures: false,
@@ -243,6 +243,7 @@ module.exports = {
   plugins: [
     "hyper-active-tab",
     "hyper-dark-scrollbar",
+    "hyper-font-ligatures",
     "hyper-highlight-active-pane",
     "hyper-monokai-deluxe",
     "hyper-pane",

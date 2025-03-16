@@ -25,6 +25,7 @@
   "grep"
   "hugo"
   "jq"
+  "pygments"
   "tmux"
   "yq"
   "sqlite"

@@ -128,7 +128,8 @@ esac
 
 {{- if eq .host.distro.family "darwin" }}
 if [ -n "${HOMEBREW_PREFIX-}" ] ; then
-  add_to_path $HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin
+  # Add the coreutils path to the front of PATH
+  export PATH="$HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin:$PATH"
 fi
 {{- end }}
 

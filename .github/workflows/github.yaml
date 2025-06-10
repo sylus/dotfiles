@@ -45,7 +45,7 @@ jobs:
                         - *shared
                         - 'home/.chezmoiscripts/ubuntu/*'
                         - 'home/.chezmoitemplates/ubuntu/*'
-                      macos-12:
+                      macos-14:
                         - *shared
                         - 'home/.chezmoiscripts/darwin/*'
                         - 'home/.chezmoitemplates/darwin/*'

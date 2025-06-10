@@ -11,10 +11,17 @@ eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 {{- end }}
 
-brew update
-brew bundle --verbose --file=/dev/stdin <<EOF
+cat <<EOF > /tmp/Brewfile
 {{ includeTemplate "debian/brewfile" . }}
 EOF
+
+brew update
+if ! brew bundle --verbose --file=/tmp/Brewfile; then
+  echo "❌ brew bundle failed!"
+  echo "🕵️ Showing failed Brewfile:"
+  cat /tmp/Brewfile
+  exit 1
+fi
 
 {{- if .host.interactive }}
 brew upgrade

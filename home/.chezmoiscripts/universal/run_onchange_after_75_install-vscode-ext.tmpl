@@ -44,6 +44,16 @@
 {{- $ext = concat $ext $sshext }}
 {{- end }}
 
-{{ range ($ext | sortAlpha | uniq) }}
-code --install-extension {{ . }} --force
+if ! command -v code >/dev/null 2>&1; then
+  echo "VS Code CLI (code) not found. Skipping extension installation."
+  exit 0
+fi
+
+{{- range ($ext | sortAlpha | uniq) }}
+if ! code --list-extensions | grep -q "^{{ . }}$"; then
+  echo "Installing extension: {{ . }}"
+  code --install-extension {{ . }} --force
+else
+  echo "Extension already installed: {{ . }}"
+fi
 {{ end }}

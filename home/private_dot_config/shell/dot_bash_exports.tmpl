@@ -43,8 +43,8 @@ export HISTCONTROL='ignoreboth'
 # Don’t clear the screen after quitting a manual page
 export MANPAGER='less -X'
 
-# Ghostty
-if [[ "$TERM_PROGRAM" == "ghostty" ]]; then
+# Ghostty terminal detection (safe even with `set -u`)
+if [[ "${TERM_PROGRAM:-}" == "ghostty" ]]; then
   export TERM=xterm-256color
 fi
 

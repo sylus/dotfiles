@@ -1,21 +1,20 @@
-# -*-mode:sh-*- vim:ft=shell-script
+# -*- mode: sh -*- vim:ft=zsh
 
-# ~/.zshrc
 # =============================================================================
-# Zsh is a shell designed for interactive use.
-#
-# Reference: https://www.zsh.org/
+# ~/.zshrc — Interactive Zsh Configuration
+# =============================================================================
+# https://www.zsh.org/
 
-# shellcheck shell=bash
-# shellcheck source=/dev/null
-# shellcheck disable=SC2034
+# shellcheck shell=bash source=/dev/null disable=SC2034
 
-# Profiling
+# -----------------------------------------------------------------------------
+# Profiling (optional)
+# -----------------------------------------------------------------------------
 # zmodload zsh/zprof
 
-# Brew Configuration
 # -----------------------------------------------------------------------------
-
+# Homebrew (per platform)
+# -----------------------------------------------------------------------------
 export HOMEBREW_NO_AUTO_UPDATE=1
 
 {{- if eq .chezmoi.os "linux" }}
@@ -30,7 +29,8 @@ eval "$(/usr/local/bin/brew shellenv)"
 {{- end }}
 {{- end }}
 
-# Powerlevel10k Configuration
+# -----------------------------------------------------------------------------
+# Powerlevel10k Instant Prompt
 # -----------------------------------------------------------------------------
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
@@ -40,14 +40,18 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# -----------------------------------------------------------------------------
+# Powerlevel10k Theme
+# -----------------------------------------------------------------------------
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
+[[ -f "$ZDOTDIR/.p10k.zsh" ]] && source "$ZDOTDIR/.p10k.zsh"
 
-# OH-MY-ZSH Configuration
+# -----------------------------------------------------------------------------
+# Oh-My-Zsh Configuration
 # -----------------------------------------------------------------------------
 
 # Path to your oh-my-zsh installation.
-export ZSH=$HOME/.config/zsh/.oh-my-zsh
+export ZSH="$ZDOTDIR/.oh-my-zsh"
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -102,36 +106,39 @@ plugins=(
   colored-man-pages
   common-aliases
   docker
-  docker-compose
   git
   gpg-agent
   history
   kubectl
-  terraform
-  vi-mode
-  vscode
 )
 
 zstyle :omz:plugins:ssh-agent agent-forwarding on
 
 # Extend function path
 fpath=(
-    $ZDOTDIR/completions
-    ~/.config/*/completions
-    $fpath
+  $ZDOTDIR/completions
+  ~/.config/*/completions
+  $fpath
 )
 
 source $ZSH/oh-my-zsh.sh
 
-# Hyper Configuration
 # -----------------------------------------------------------------------------
-
-PROMPT="%{$fg[white]%}%n@%{$fg[green]%}%m%{$reset_color%} ${PROMPT}"
+# Shell Behavior
+# -----------------------------------------------------------------------------
 unset zle_bracketed_paste to
 unsetopt PROMPT_SP
 setopt histignorespace
 setopt rm_star_silent
 
+# -----------------------------------------------------------------------------
+# Fallback Prompt (if P10K fails)
+# -----------------------------------------------------------------------------
+if [[ -z "$POWERLEVEL9K_LEFT_PROMPT_ELEMENTS" ]]; then
+  PROMPT="%{$fg[white]%}%n@%{$fg[green]%}%m%{$reset_color%} ${PROMPT}"
+fi
+
+# -----------------------------------------------------------------------------
 # NVM Configuration
 # -----------------------------------------------------------------------------
 
@@ -142,40 +149,30 @@ export NVM_DIR="$HOME/.nvm"
 
 ln -sf "$(brew --prefix)/bin/python"{3,}
 
-# Includes
+# -----------------------------------------------------------------------------
+# Cross-Shell Includes (aliases, exports, functions)
 # -----------------------------------------------------------------------------
 
-# Load cross-compatible Bash alias definitions from separate file.
-if [ -f "$HOME"/.config/shell/.bash_aliases ]; then
-    \. "$HOME"/.config/shell/.bash_aliases
-fi
+for file in aliases exports functions; do
+  [[ -r "$HOME/.config/shell/.bash_${file}" ]] && source "$HOME/.config/shell/.bash_${file}"
+done
 
-# Load cross-compatible Bash exports definitions from separate file.
-if [ -f "$HOME"/.config/shell/.bash_exports ]; then
-    \. "$HOME"/.config/shell/.bash_exports
-fi
-
-# Load cross-compatible Bash functions declarations from separate file.
-if [ -f "$HOME"/.config/shell/.bash_functions ]; then
-    \. "$HOME"/.config/shell/.bash_functions
-fi
-
+# -----------------------------------------------------------------------------
+# Kubernetes Toolchain (Linux only)
+# -----------------------------------------------------------------------------
 {{- if eq .chezmoi.os "linux" }}
 {{- if .toolchains.kubernetes }}
-# Load cross-compatible Kubernetes alias definitions from separate file.
-if [ -f "$HOME"/.config/kubernetes/.kube_aliases ]; then
-    \. "$HOME"/.config/kubernetes/.kube_aliases
-fi
-
-# Load cross-compatible Kubernetes functions definitions from separate file.
-if [ -f "$HOME"/.config/kubernetes/.kube_functions ]; then
-    \. "$HOME"/.config/kubernetes/.kube_functions
-fi
+[[ -f "$HOME/.config/kubernetes/.kube_aliases" ]] && source "$HOME/.config/kubernetes/.kube_aliases"
+[[ -f "$HOME/.config/kubernetes/.kube_functions" ]] && source "$HOME/.config/kubernetes/.kube_functions"
 {{- end }}
 {{- end }}
 
-# Profiling
+# -----------------------------------------------------------------------------
+# zsh-syntax-highlighting
+# -----------------------------------------------------------------------------
+source "$ZSH/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+# -----------------------------------------------------------------------------
+# Profiling (end)
+# -----------------------------------------------------------------------------
 # zprof
-
-# zsh plugins
-source $ZSH/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

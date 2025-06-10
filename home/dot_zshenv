@@ -1,2 +1,6 @@
-ZDOTDIR=$HOME/.config/zsh/
-source -- "$ZDOTDIR"/.zshrc
+ZDOTDIR=$HOME/.config/zsh
+
+if [[ -z "$_ZDOTDIR_SOURCED" ]]; then
+  export _ZDOTDIR_SOURCED=1
+  [[ -f "$ZDOTDIR/.zshrc" ]] && source "$ZDOTDIR/.zshrc"
+fi

@@ -1,10 +1,10 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
+// README at: https://github.com/devcontainers/templates/blob/main/src/ubuntu/README.md
 {
   "name": "Ubuntu",
   "build": {
     "dockerfile": "Dockerfile",
-    "args": { "VARIANT": "jammy" }
+    "args": { "VARIANT": "noble" }
   },
 
   // Features to add to the dev container. More info: https://containers.dev/features.
@@ -13,7 +13,7 @@
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": "true",
       "configureZshAsDefaultShell": "true",
-      "installOhMyZsh": true,
+      "installOhMyZsh": "true",
       "upgradePackages": "true"
     }
   },

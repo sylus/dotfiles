@@ -97,7 +97,7 @@ jobs:
                   platforms: ${{ env.PLATFORMS }}
 
             - name: Cache Docker Layers
-              uses: actions/cache@c1a5de879eb890d062a85ee0252d6036480b1fe2 # v3
+              uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
               with:
                   path: /tmp/.buildx-cache
                   key: ${{ matrix.os }}-buildx-${{ github.sha }}

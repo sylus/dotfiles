@@ -59,5 +59,24 @@
     "terminal.integrated.fontLigatures": true,
     "terminal.integrated.copyOnSelection": true,
     "terminal.integrated.cursorBlinking": true,
-    "terminal.integrated.smoothScrolling": true
+    "terminal.integrated.smoothScrolling": true,
+    "colorize.languages": [
+      "typescript",
+      "typescriptreact",
+      "javascript",
+      "json",
+      "html",
+      "css",
+      "sass",
+      "scss",
+      "less",
+      "postcss",
+      "sss",
+      "stylus",
+      "xml",
+      "svg"
+    ],
+    "vs-kubernetes": {
+        "vs-kubernetes.crd-code-completion": "disabled"
+    }
 }

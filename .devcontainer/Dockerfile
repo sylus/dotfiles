@@ -1,8 +1,18 @@
-# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.231.0/containers/ubuntu/.devcontainer/base.Dockerfile
+# See here for image contents: https://github.com/devcontainers/images/blob/main/src/base-ubuntu/.devcontainer/Dockerfile
 
-# [Choice] Ubuntu version (use jammy or bionic on local arm64/Apple Silicon): jammy, focal, bionic
-ARG VARIANT="jammy"
-FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT}
+ARG VARIANT="noble"
+FROM buildpack-deps:${VARIANT}-curl
+
+LABEL dev.containers.features="common"
+
+ARG VARIANT
+RUN if [ "$VARIANT" = "noble" ]; then \
+        if id "ubuntu" &>/dev/null; then \
+            echo "Deleting user 'ubuntu'  for $VARIANT" && userdel -f -r ubuntu || echo "Failed to delete ubuntu user for $VARIANT"; \
+        else \
+            echo "User 'ubuntu' does not exist for $VARIANT"; \
+        fi; \
+    fi
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \

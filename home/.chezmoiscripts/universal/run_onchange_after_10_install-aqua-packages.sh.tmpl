@@ -4,11 +4,11 @@ set -eufo pipefail
 source $HOME/.config/shell/.bash_exports
 
 # renovate: depName=aquaproj/aqua datasource=github-releases
-current_aqua_version=v2.21.0
+current_aqua_version=v2.53.0
 
 if [ ! $(command -v aqua) ] || [ $(aqua -v | head -n1 | cut -d" " -f3 | sed "s/^/v/") != $current_aqua_version ]; then
   echo "Installing aqua"
-  curl -sSfL https://raw.githubusercontent.com/aquaproj/aqua-installer/v2.2.0/aqua-installer | bash -s -- -v $current_aqua_version
+  curl -sSfL https://raw.githubusercontent.com/aquaproj/aqua-installer/v4.0.0/aqua-installer | bash -s -- -v $current_aqua_version
 fi
 
 {{- $files := list -}}
